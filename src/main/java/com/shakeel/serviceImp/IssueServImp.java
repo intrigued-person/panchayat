@@ -66,7 +66,7 @@ public class IssueServImp implements IssueService {
 	}
 
 	@Override
-	public Issues findByUserId(int userId) {
+	public List<Issues> findByUserId(int userId) {
 		// TODO Auto-generated method stub
 		return repo.findByUserId(userId);
 	}

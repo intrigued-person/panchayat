@@ -44,9 +44,9 @@ public class DeathImp implements DeathService {
 	@Override
 	public void addDeath(String district, String state, String address, String mobile, String gender, String dname,
 			String nominee, String nomineeName, String placeOfBirth, String hospitalName, String date, String time,
-			MultipartFile deathImg, String status, LocalDateTime generate, int userId, int paymentId) {
+			MultipartFile deathImg, String status, int userId, int paymentId) {
 		repo.save(district, state, address, mobile, gender, dname, nominee, nomineeName, placeOfBirth, hospitalName,
-				date, time, deathImg, status, generate, userId, paymentId);
+				date, time, deathImg, status, userId, paymentId);
 
 	}
 
@@ -70,6 +70,11 @@ public class DeathImp implements DeathService {
 	@Override
 	public Death findByUserId(int userId) {
 		return repo.findByUserId(userId);
+	}
+
+	@Override
+	public List<Death> findApprovedDeathsByAdmin() {
+		return repo.findApprovedDeathsByAdmin();
 	}
 
 }

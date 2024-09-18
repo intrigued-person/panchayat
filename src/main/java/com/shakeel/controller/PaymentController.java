@@ -3,6 +3,8 @@ package com.shakeel.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,16 +31,33 @@ public class PaymentController {
 
 	}
 
+//	@PostMapping
+//	public String addPay(@RequestBody Payment pay) {
+//		String msg = "";
+//		try {
+//			service.addPayment(pay);
+//			msg = "payment success";
+//		} catch (Exception e) {
+//			msg = "fail to pay";
+//		}
+//		return msg;
+//
+//	}
+
 	@PostMapping
-	public String addPay(@RequestBody Payment pay) {
-		String msg = "";
+	public ResponseEntity<Payment> addPays(@RequestBody Payment pay) {
 		try {
-			service.addPayment(pay);
-			msg = "payment success";
+			Payment response = service.addPayment(pay);
+			if (response != null) {
+				return ResponseEntity.status(HttpStatus.CREATED).body(response);
+			} else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			}
+
 		} catch (Exception e) {
-			msg = "fail to pay";
+			e.printStackTrace(); // Log the exception
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
-		return msg;
 
 	}
 

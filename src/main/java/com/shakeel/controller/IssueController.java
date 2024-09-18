@@ -69,7 +69,7 @@ public class IssueController {
 	}
 
 	@GetMapping("/findIssueByUserId/{userId}")
-	public Issues findByUserId(@PathVariable("userId") int userId) {
+	public List<Issues> findByUserId(@PathVariable("userId") int userId) {
 		return service.findByUserId(userId);
 
 	}

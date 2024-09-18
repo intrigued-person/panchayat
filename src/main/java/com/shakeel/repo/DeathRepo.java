@@ -1,6 +1,5 @@
 package com.shakeel.repo;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +11,7 @@ public interface DeathRepo {
 
 	public void save(String district, String state, String address, String mobile, String gender, String dname,
 			String nominee, String nomineeName, String placeOfBirth, String hospitalName, String date, String time,
-			MultipartFile deathImg, String status, LocalDateTime generate, int userId, int paymentId);
+			MultipartFile deathImg, String status, int userId, int paymentId);
 
 	public void delete(int deathId);
 
@@ -23,5 +22,7 @@ public interface DeathRepo {
 	public Death findById(int deathId);
 
 	public Death findByUserId(int userId);
+
+	List<Death> findApprovedDeathsByAdmin();
 
 }

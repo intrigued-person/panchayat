@@ -19,8 +19,9 @@ public class PaymentImp implements PaymentService {
 	PaymentRepoImp repo;
 
 	@Override
-	public void addPayment(Payment pay) {
-		repo.save(pay);
+	public Payment addPayment(Payment pay) {
+		Payment pt = repo.save(pay);
+		return pt;
 	}
 
 	@Override

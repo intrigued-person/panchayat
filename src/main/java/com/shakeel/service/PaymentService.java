@@ -7,7 +7,7 @@ import com.shakeel.model.Payment;
 
 public interface PaymentService {
 	
-	public void addPayment(Payment pay);
+	public Payment addPayment(Payment pay);
 
 	public void delPayment(int payId);
 

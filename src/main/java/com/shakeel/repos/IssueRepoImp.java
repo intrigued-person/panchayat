@@ -68,11 +68,11 @@ public class IssueRepoImp implements IssueRepo {
 	}
 
 	@Override
-	public Issues findByUserId(int userId) {
+	public List<Issues> findByUserId(int userId) {
 		try {
 			Query<Issues> query = (Query<Issues>) em.createQuery("from Issues where user.userId = ?1", Issues.class)
 					.setParameter(1, userId);
-			return query.getSingleResult();
+			return query.getResultList();
 
 		} catch (Exception e) {
 			return null;

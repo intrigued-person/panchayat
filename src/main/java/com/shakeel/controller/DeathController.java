@@ -38,13 +38,14 @@ public class DeathController {
 			@RequestParam String mobile, @RequestParam String gender, @RequestParam String dname,
 			@RequestParam String nominee, @RequestParam String nomineeName, @RequestParam String placeOfBirth,
 			@RequestParam String hospitalName, @RequestParam String date, @RequestParam String time,
-			@RequestParam MultipartFile deathImg, @RequestParam String status, @RequestParam String generate,
-			@RequestParam int userId, @RequestParam int paymentId) {
+			@RequestParam MultipartFile deathImg, @RequestParam String status, @RequestParam int userId,
+			@RequestParam int paymentId) {
 		String msg = "";
 		try {
-			LocalDateTime generateDateTime = LocalDateTime.parse(generate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			// LocalDateTime generateDateTime = LocalDateTime.parse(generate,
+			// DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 			service.addDeath(district, state, address, mobile, gender, dname, nominee, nomineeName, placeOfBirth,
-					hospitalName, date, time, deathImg, status, generateDateTime, userId, paymentId);
+					hospitalName, date, time, deathImg, status, userId, paymentId);
 			msg = SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace(); // Log the exception for debugging
@@ -82,5 +83,17 @@ public class DeathController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FAILURE);
 		}
 	}
+
+	@GetMapping("/approvedDeath")
+	public ResponseEntity<List<Death>> getApprovedApplications() {
+		List<Death> birth = service.findApprovedDeathsByAdmin();
+		return ResponseEntity.ok(birth);
+	}
+	
+	@GetMapping("/findDeath/{deathId}")
+	public Death findDeathbyDeathId(@PathVariable("deathId") int deathId) {
+		return service.findById(deathId);
+	}
+
 
 }

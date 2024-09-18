@@ -12,7 +12,7 @@ public interface DeathService {
 
 	public void addDeath(String district, String state, String address, String mobile, String gender, String dname,
 			String nominee, String nomineeName, String placeOfBirth, String hospitalName, String date, String time,
-			MultipartFile deathImg, String status, LocalDateTime generate, int userId, int paymentId);
+			MultipartFile deathImg, String status, int userId, int paymentId);
 
 	public void delDeath(int deathId);
 
@@ -25,4 +25,7 @@ public interface DeathService {
 	public boolean update(int deathId, String status);
 
 	public Death findByUserId(int userId);
+
+	List<Death> findApprovedDeathsByAdmin();
+
 }

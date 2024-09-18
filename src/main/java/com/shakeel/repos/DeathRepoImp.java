@@ -52,7 +52,7 @@ public class DeathRepoImp implements DeathRepo {
 	@Override
 	public void save(String district, String state, String address, String mobile, String gender, String dname,
 			String nominee, String nomineeName, String placeOfBirth, String hospitalName, String date, String time,
-			MultipartFile deathImg, String status, LocalDateTime generate, int userId, int paymentId) {
+			MultipartFile deathImg, String status, int userId, int paymentId) {
 
 		User reg = em.find(User.class, userId);
 		Payment pay = em.find(Payment.class, paymentId);
@@ -75,7 +75,7 @@ public class DeathRepoImp implements DeathRepo {
 			death.setTime(time); // Assuming time is in the appropriate format
 			death.setDeathImg(deathImg.getBytes()); // Convert MultipartFile to byte array
 			death.setStatus(status);
-			death.setGenerate(generate);
+		//	death.setGenerate(generate);
 			death.setUser(reg); // Set User
 			death.setPayment(pay); // Set Payment
 
@@ -96,6 +96,20 @@ public class DeathRepoImp implements DeathRepo {
 			return query.getSingleResult();
 
 		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Death> findApprovedDeathsByAdmin() {
+		try {
+			Query query = (Query) em.createQuery("SELECT d FROM Death d WHERE d.status = 'approved'");
+
+			List<Death> results = query.getResultList();
+
+			return results;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

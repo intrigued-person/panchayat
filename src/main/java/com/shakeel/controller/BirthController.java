@@ -1,7 +1,5 @@
 package com.shakeel.controller;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.shakeel.model.Approval;
 import com.shakeel.model.Birth;
 import com.shakeel.serviceImp.BirthImp;
 
@@ -33,28 +31,6 @@ public class BirthController {
 	static final String SUCCESS = "Success";
 	static final String FAILURE = "Failure";
 
-//	@PostMapping
-//	public String insertBirth(@RequestParam String district, @RequestParam String mobile, @RequestParam String emailId,
-//			@RequestParam String dob, @RequestParam String gender, @RequestParam String childName,
-//			@RequestParam String fatherName, @RequestParam String motherName, @RequestParam String address,
-//			@RequestParam String state, @RequestParam String placeOfBirth, @RequestParam String hospitalName,
-//			@RequestParam String town, @RequestParam String religion, @RequestParam String focup,
-//			@RequestParam String mocup, @RequestParam String motherMrgYr, @RequestParam String motherBirthYr,
-//			@RequestParam String certificateType, @RequestParam String status, @RequestParam String generate,
-//			@RequestParam MultipartFile hospitalImg, @RequestParam Integer userId) {
-//		String msg = "";
-//		try {
-//			LocalDateTime generateDateTime = LocalDateTime.parse(generate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-//			service.addBirth(district, mobile, emailId, dob, gender, childName, fatherName, motherName, address, state,
-//					placeOfBirth, hospitalName, town, religion, focup, mocup, motherMrgYr, motherBirthYr,
-//					certificateType, status, generateDateTime, hospitalImg, userId);
-//			msg = SUCCESS;
-//		} catch (Exception e) {
-//			msg = FAILURE;
-//		}
-//		return msg;
-//	}
-
 	@PostMapping
 	public ResponseEntity<Birth> insertBirth(@RequestParam String district, @RequestParam String mobile,
 			@RequestParam String emailId, @RequestParam String dob, @RequestParam String gender,
@@ -63,16 +39,14 @@ public class BirthController {
 			@RequestParam String hospitalName, @RequestParam String town, @RequestParam String religion,
 			@RequestParam String focup, @RequestParam String mocup, @RequestParam String motherMrgYr,
 			@RequestParam String motherBirthYr, @RequestParam String certificateType, @RequestParam String status,
-			@RequestParam String generate, @RequestParam MultipartFile hospitalImg,
-			@RequestParam Integer userId) {
+			@RequestParam MultipartFile hospitalImg, @RequestParam Integer userId, @RequestParam String reason,
+			@RequestParam Integer paymentId) {
 
 		try {
-			LocalDateTime generateDateTime = LocalDateTime.parse(generate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-			// Call service layer to handle the business logic
-			Birth response = service.addBirth(district, mobile, emailId, dob, gender, childName, fatherName,
-					motherName, address, state, placeOfBirth, hospitalName, town, religion, focup, mocup, motherMrgYr,
-					motherBirthYr, certificateType, status, generateDateTime, hospitalImg, userId);
+			Birth response = service.addBirth(district, mobile, emailId, dob, gender, childName, fatherName, motherName,
+					address, state, placeOfBirth, hospitalName, town, religion, focup, mocup, motherMrgYr,
+					motherBirthYr, certificateType, status, hospitalImg, userId, reason, paymentId);
 
 			if (response != null) {
 				return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -81,9 +55,8 @@ public class BirthController {
 			}
 
 		} catch (Exception e) {
-			// Log the exception (optional)
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new Birth());
+			e.printStackTrace(); // Log the exception
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
@@ -114,6 +87,28 @@ public class BirthController {
 	public Birth findByUserId(@PathVariable("userId") int userId) {
 		return service.findByUserId(userId);
 
+	}
+
+	@DeleteMapping("/delete/{birthId}")
+	public ResponseEntity<String> deleteBirth(@PathVariable("birthId") int birthId) {
+		try {
+			service.delBirth(birthId);
+			return ResponseEntity.ok("Birth record deleted successfully");
+		} catch (Exception e) {
+			e.printStackTrace(); // Log the exception
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete birth record");
+		}
+	}
+
+	@GetMapping("/approvedBirth")
+	public ResponseEntity<List<Birth>> getApprovedApplications() {
+		List<Birth> birth = service.findApprovedBirthsByAdmin();
+		return ResponseEntity.ok(birth);
+	}
+
+	@GetMapping("/findBirth/{birthId}")
+	public Birth findBirthbyBirthId(@PathVariable("birthId") int birthId) {
+		return service.findById(birthId);
 	}
 
 }

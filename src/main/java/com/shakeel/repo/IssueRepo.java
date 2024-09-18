@@ -22,5 +22,5 @@ public interface IssueRepo {
 
 	public Issues findById(int issueId);
 	
-	public Issues findByUserId(int userId);
+	public List<Issues> findByUserId(int userId);
 }

@@ -1,7 +1,5 @@
 package com.shakeel.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,8 +45,6 @@ public class Death {
 
 	private String status;
 
-	private LocalDateTime generate;
-
 	@OneToOne
 	private User user;
 
@@ -62,7 +58,7 @@ public class Death {
 
 	public Death(int deathId, String district, String state, String address, String mobile, String gender, String dname,
 			String nominee, String nomineeName, String placeOfBirth, String hospitalName, String date, String time,
-			byte[] deathImg, String status, LocalDateTime generate, User user, Payment payment) {
+			byte[] deathImg, String status, User user, Payment payment) {
 		super();
 		this.deathId = deathId;
 		this.district = district;
@@ -79,7 +75,6 @@ public class Death {
 		this.time = time;
 		this.deathImg = deathImg;
 		this.status = status;
-		this.generate = generate;
 		this.user = user;
 		this.payment = payment;
 	}
@@ -218,14 +213,6 @@ public class Death {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public LocalDateTime getGenerate() {
-		return generate;
-	}
-
-	public void setGenerate(LocalDateTime generate) {
-		this.generate = generate;
 	}
 
 }

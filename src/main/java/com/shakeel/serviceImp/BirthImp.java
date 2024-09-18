@@ -1,6 +1,5 @@
 package com.shakeel.serviceImp;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +43,17 @@ public class BirthImp implements BirthService {
 	public Birth addBirth(String district, String mobile, String emailId, String dob, String gender, String childName,
 			String fatherName, String motherName, String address, String state, String placeOfBirth,
 			String hospitalName, String town, String religion, String focup, String mocup, String motherMrgYr,
-			String motherBirthYr, String certificateType, String status, LocalDateTime generate,
-			MultipartFile hospitalImg, Integer userId) {
+			String motherBirthYr, String certificateType, String status, MultipartFile hospitalImg, Integer userId,
+			String reason, Integer paymentId) {
 		try {
-			Birth bth = repo.save(district, mobile, emailId, dob, gender, childName, fatherName, motherName, address, state,
-					placeOfBirth, hospitalName, town, religion, focup, mocup, motherMrgYr, motherBirthYr,
-					certificateType, status, generate, hospitalImg, userId);
+			Birth bth = repo.save(district, mobile, emailId, dob, gender, childName, fatherName, motherName, address,
+					state, placeOfBirth, hospitalName, town, religion, focup, mocup, motherMrgYr, motherBirthYr,
+					certificateType, status, hospitalImg, userId, reason, paymentId);
 			return bth;
-
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	@Override
@@ -70,7 +68,7 @@ public class BirthImp implements BirthService {
 				return false;
 			}
 		} catch (Exception e) {
-			e.printStackTrace(); // Add logging to see the exception details
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -78,6 +76,11 @@ public class BirthImp implements BirthService {
 	@Override
 	public Birth findByUserId(int userId) {
 		return repo.findByUserId(userId);
+	}
+
+	@Override
+	public List<Birth> findApprovedBirthsByAdmin() {
+		return repo.findApprovedBirthsByAdmin();
 	}
 
 }

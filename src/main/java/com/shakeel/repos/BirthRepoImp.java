@@ -1,6 +1,5 @@
 package com.shakeel.repos;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.query.Query;
@@ -42,20 +41,20 @@ public class BirthRepoImp implements BirthRepo {
 
 	@Override
 	public Birth findById(int birthId) {
-		Query<Birth> q = (Query<Birth>) em.createQuery("from Birth where birthId = :birthId");
-		q.setParameter(1, birthId);
-		return (Birth) q.getSingleResult();
+		Query<Birth> q = (Query<Birth>) em.createQuery("SELECT b FROM Birth b WHERE b.birthId = :birthId", Birth.class);
+		q.setParameter("birthId", birthId);
+		return q.getSingleResult();
 	}
 
 	@Override
 	public Birth save(String district, String mobile, String emailId, String dob, String gender, String childName,
 			String fatherName, String motherName, String address, String state, String placeOfBirth,
 			String hospitalName, String town, String religion, String focup, String mocup, String motherMrgYr,
-			String motherBirthYr, String certificateType, String status, LocalDateTime generate,
-			MultipartFile hospitalImg, Integer userId) {
+			String motherBirthYr, String certificateType, String status, MultipartFile hospitalImg, Integer userId,
+			String reason, Integer paymentId) {
 
 		User reg = em.find(User.class, userId);
-	//	Payment pay = em.find(Payment.class, paymentId);
+		Payment pay = em.find(Payment.class, paymentId);
 
 		try {
 			Birth bth = new Birth();
@@ -68,7 +67,6 @@ public class BirthRepoImp implements BirthRepo {
 			bth.setFatherName(fatherName);
 			bth.setMotherName(motherName);
 			bth.setAddress(address);
-			bth.setAddress(address);
 			bth.setState(state);
 			bth.setPlaceOfBirth(placeOfBirth);
 			bth.setHospitalName(hospitalName);
@@ -80,18 +78,17 @@ public class BirthRepoImp implements BirthRepo {
 			bth.setMotherBirthYr(motherBirthYr);
 			bth.setCertificateType(certificateType);
 			bth.setStatus(status);
-			bth.setGenerate(generate.now());
 			bth.setHospitalImg(hospitalImg.getBytes());
 			bth.setUser(reg);
-		//	bth.setPayment(pay);
-			 em.persist(bth);
+			bth.setReason(reason);
+			bth.setPayment(pay);
+			em.persist(bth);
 			return bth;
 
 		} catch (Exception e) {
 			System.out.println("Birth Not added");
 			return null;
 		}
-
 	}
 
 	@Override
@@ -105,6 +102,19 @@ public class BirthRepoImp implements BirthRepo {
 			return null;
 		}
 
+	}
+
+	public List<Birth> findApprovedBirthsByAdmin() {
+		try {
+			Query query = (Query) em.createQuery("SELECT b FROM Birth b WHERE b.status = 'approved'");
+
+			List<Birth> results = query.getResultList();
+
+			return results;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

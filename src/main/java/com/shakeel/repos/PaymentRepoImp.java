@@ -19,8 +19,9 @@ public class PaymentRepoImp implements PaymentRepo {
 	EntityManager em;
 
 	@Override
-	public void save(Payment pay) {
+	public Payment save(Payment pay) {
 		em.persist(pay);
+		return pay;
 	}
 
 	@Override

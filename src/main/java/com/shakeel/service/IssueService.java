@@ -23,7 +23,7 @@ public interface IssueService {
 
 	public boolean update(int issueId, String status);
 	
-	public Issues findByUserId(int userId);
+	public List<Issues> findByUserId(int userId);
 
 
 }

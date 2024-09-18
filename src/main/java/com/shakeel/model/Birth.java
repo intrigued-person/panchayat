@@ -1,7 +1,5 @@
 package com.shakeel.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -58,7 +56,7 @@ public class Birth {
 
 	private String status;
 
-	private LocalDateTime generate;
+	private String reason;
 
 	@Lob
 	@Column(columnDefinition = "LONGBLOB", length = 1000000)
@@ -67,19 +65,18 @@ public class Birth {
 	@OneToOne
 	private User user;
 
-//	@OneToOne
-//	private Payment payment;
+	@OneToOne
+	private Payment payment;
 
 	public Birth() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Birth(int birthId, String district, String mobile, String emailId, String dob, String gender,
 			String childName, String fatherName, String motherName, String address, String state, String placeOfBirth,
 			String hospitalName, String town, String religion, String focup, String mocup, String motherMrgYr,
-			String motherBirthYr, String certificateType, String status, LocalDateTime generate, byte[] hospitalImg,
-			User user) {
+			String motherBirthYr, String certificateType, String status, String reason, byte[] hospitalImg, User user,
+			Payment payment) {
 		super();
 		this.birthId = birthId;
 		this.district = district;
@@ -102,10 +99,10 @@ public class Birth {
 		this.motherBirthYr = motherBirthYr;
 		this.certificateType = certificateType;
 		this.status = status;
-		this.generate = generate;
+		this.reason = reason;
 		this.hospitalImg = hospitalImg;
 		this.user = user;
-		// this.payment = payment;
+		this.payment = payment;
 	}
 
 	public int getBirthId() {
@@ -292,20 +289,20 @@ public class Birth {
 		this.user = user;
 	}
 
-//	public Payment getPayment() {
-//		return payment;
-//	}
-//
-//	public void setPayment(Payment payment) {
-//		this.payment = payment;
-//	}
-
-	public LocalDateTime getGenerate() {
-		return generate;
+	public Payment getPayment() {
+		return payment;
 	}
 
-	public void setGenerate(LocalDateTime generate) {
-		this.generate = generate;
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 }
